@@ -9,6 +9,7 @@ namespace Capstone
     {
         public static void Main(string[] args)
         {
+            //MainMenu();
             // Make the Dictionary
             Dictionary<string, dynamic> VendingMachineItems = new Dictionary<string, dynamic>();
             // Finding the File
@@ -49,11 +50,11 @@ namespace Capstone
                 }
             }
 
-            foreach (string thing in VendingMachineItems.Keys)
-            {
-                Console.WriteLine(VendingMachineItems[thing].Name + " " + VendingMachineItems[thing].Price + " " + VendingMachineItems[thing].Quantity);
-                
-            }
+            //foreach (string thing in VendingMachineItems.Keys)
+            //{
+            //    Console.WriteLine(VendingMachineItems[thing].Name + " " + VendingMachineItems[thing].Price + " " + VendingMachineItems[thing].Quantity);
+
+            //}
 
 
             Console.WriteLine("Welcome to the Vending Machine!");
@@ -62,10 +63,35 @@ namespace Capstone
             Console.WriteLine("(2) Purchase");
             Console.WriteLine("(3) Exit ");
 
+            string choice = Console.ReadLine();
+
+            if (choice == "1")
+            {
+                foreach (string thing in VendingMachineItems.Keys)
+                {
+                    Console.WriteLine(VendingMachineItems[thing].Name + " " + VendingMachineItems[thing].Price + " " + VendingMachineItems[thing].Quantity);
+                    
+                }
+            }
+
             
 
-
-
         }
+        static void MainMenu()
+        {
+            Console.WriteLine("Welcome to the Vending Machine!");
+            Console.WriteLine("Choose one.");
+            Console.WriteLine("(1) Display Vending Machine Items");
+            Console.WriteLine("(2) Purchase");
+            Console.WriteLine("(3) Exit ");
+
+            string choice = Console.ReadLine();
+            // want to be able to access choices from here
+
+            
+        }
+
+
+
     }
 }
