@@ -19,5 +19,9 @@ namespace Capstone
             Price = price;
             Type = type;
         }
+        /*int numberCandySold = 0
+            if (purchasedItem = whatevercandywereusingrightnow){
+                numbercandysold +=
+        this.quantity = quantity - numberSold*/
     }
 }
