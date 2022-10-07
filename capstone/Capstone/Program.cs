@@ -108,6 +108,7 @@ namespace Capstone
             Console.WriteLine("2) Purchase Item");
             Console.WriteLine("3) Finish Transaction");
             string purchaseMenuChoice = Console.ReadLine();
+            
 
 
             if (purchaseMenuChoice == "1")
@@ -134,15 +135,27 @@ namespace Capstone
                 }
                 Console.WriteLine("Choose the item you want to buy");
                 string buyerChoice = Console.ReadLine();
+                buyerChoice = buyerChoice.ToUpper();
+                if(!VendingMachineItems.ContainsKey(buyerChoice))
+                {
+                    Console.WriteLine("Please make a valid selection");
+                    PurchaseMenu();
+                }
                 if(purchase.currentBalance < VendingMachineItems[buyerChoice].Price || purchase.currentBalance - VendingMachineItems[buyerChoice].Price < 0)
                 {
                     Console.WriteLine("You need to add more money, you freeloading hippie.");
                     PurchaseMenu();
                 }
-                Console.WriteLine($"You chose {VendingMachineItems[buyerChoice].Name}");
+                if(VendingMachineItems[buyerChoice].Quantity == 0)
+                {
+                    Console.WriteLine("SOLD OUT");
+                    PurchaseMenu();
+                }
+
                 Console.WriteLine(VendingMachineItems[buyerChoice].Message);
                 VendingMachineItems[buyerChoice].Quantity -= 1;
                 purchase.currentBalance -= VendingMachineItems[buyerChoice].Price;
+                Console.WriteLine($"You chose {VendingMachineItems[buyerChoice].Name}, it cost {VendingMachineItems[buyerChoice].Price}, your remaining balance is {purchase.currentBalance}.");
                 PurchaseMenu();
             }
             if(purchaseMenuChoice == "3")
