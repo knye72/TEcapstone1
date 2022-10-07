@@ -10,13 +10,12 @@ namespace Capstone
     {
         static Dictionary<string, dynamic> VendingMachineItems = new Dictionary<string, dynamic>();
         static Purchase purchase = new Purchase();
-
+        static List<string> logList = new List<string>();
 
         public static void Main(string[] args)
         {
-
-            // Make the Dictionary
-            // Finding the File
+            // Make the Dictionary for the inventory
+            // Finding the File to read from
             string filePath = @"C:\Users\Student\git\c-sharp-minicapstonemodule1-team3\capstone\Capstone\bin\Debug\netcoreapp3.1";
             string fileName = "vendingmachine.csv";
             string fullPath = Path.Combine(filePath, fileName);
@@ -56,27 +55,6 @@ namespace Capstone
             MainMenu();
 
 
-
-
-            /*Console.WriteLine("Welcome to the Vending Machine!");
-            Console.WriteLine("Choose one.");
-            Console.WriteLine("(1) Display Vending Machine Items");
-            Console.WriteLine("(2) Purchase");
-            Console.WriteLine("(3) Exit ");
-
-            string choice = Console.ReadLine();
-
-            if (choice == "1")
-            {
-                foreach (string thing in VendingMachineItems.Keys)
-                {
-                    Console.WriteLine(VendingMachineItems[thing].Name + " " + VendingMachineItems[thing].Price + " " + VendingMachineItems[thing].Quantity);
-
-                }
-            }
-*/
-
-
         }
         public static void MainMenu()
         {
@@ -103,12 +81,13 @@ namespace Capstone
         }
         public static void PurchaseMenu()
         {
+            
             Console.WriteLine($"Current money provided: {purchase.currentBalance}");
             Console.WriteLine("1) Feed Money");
             Console.WriteLine("2) Purchase Item");
             Console.WriteLine("3) Finish Transaction");
             string purchaseMenuChoice = Console.ReadLine();
-            
+
 
 
             if (purchaseMenuChoice == "1")
@@ -119,11 +98,15 @@ namespace Capstone
                 //if they don't do a number we hit htem with a message like "hey asshole, we said to use a number. try again."
 
                 purchase.AddToBalance(moneyToAdd);
+                logList.Add(DateTime.Now + " " + "FEED MONEY: " + moneyToAdd + " " +  purchase.currentBalance);
+                    
+                    
+                
                 PurchaseMenu();
             }
-            if(purchaseMenuChoice == "2")
+            if (purchaseMenuChoice == "2")
             {
-                if(purchase.currentBalance == 0)
+                if (purchase.currentBalance == 0)
                 {
                     Console.WriteLine("You need to add money before you make a purchase, you freeloading hippie.");
                     PurchaseMenu();
@@ -136,17 +119,17 @@ namespace Capstone
                 Console.WriteLine("Choose the item you want to buy");
                 string buyerChoice = Console.ReadLine();
                 buyerChoice = buyerChoice.ToUpper();
-                if(!VendingMachineItems.ContainsKey(buyerChoice))
+                if (!VendingMachineItems.ContainsKey(buyerChoice))
                 {
                     Console.WriteLine("Please make a valid selection");
                     PurchaseMenu();
                 }
-                if(purchase.currentBalance < VendingMachineItems[buyerChoice].Price || purchase.currentBalance - VendingMachineItems[buyerChoice].Price < 0)
+                if (purchase.currentBalance < VendingMachineItems[buyerChoice].Price || purchase.currentBalance - VendingMachineItems[buyerChoice].Price < 0)
                 {
                     Console.WriteLine("You need to add more money, you freeloading hippie.");
                     PurchaseMenu();
                 }
-                if(VendingMachineItems[buyerChoice].Quantity == 0)
+                if (VendingMachineItems[buyerChoice].Quantity == 0)
                 {
                     Console.WriteLine("SOLD OUT");
                     PurchaseMenu();
@@ -156,14 +139,34 @@ namespace Capstone
                 VendingMachineItems[buyerChoice].Quantity -= 1;
                 purchase.currentBalance -= VendingMachineItems[buyerChoice].Price;
                 Console.WriteLine($"You chose {VendingMachineItems[buyerChoice].Name}, it cost {VendingMachineItems[buyerChoice].Price}, your remaining balance is {purchase.currentBalance}.");
+                logList.Add(DateTime.Now + " " + VendingMachineItems[buyerChoice].Name + " " + VendingMachineItems[buyerChoice].Price + " " + purchase.currentBalance);
                 PurchaseMenu();
             }
-            if(purchaseMenuChoice == "3")
+            if (purchaseMenuChoice == "3")
             {
                 Console.WriteLine("So long, sucka.");
                 Console.WriteLine(purchase.ChangeOwed());
+                logList.Add(DateTime.Now + " " + "GIVE CHANGE: " + purchase.ChangeOwed() + " " + purchase.currentBalance);
+                string pathToSecondFile = Environment.CurrentDirectory;
+                string secondFile = "Log.txt";
+                string areWeThereYet = Path.Combine(pathToSecondFile, secondFile);
+                using (StreamWriter writer = new StreamWriter(areWeThereYet))
+                {
+                    foreach (string line in logList)
+                    {
+                        writer.WriteLine(line);
+                    }
+                }
+                purchase.currentBalance = 0;
+
                 MainMenu();
             }
+
+
+            
+
+
+
         }
 
         public static void ShowInventory()
