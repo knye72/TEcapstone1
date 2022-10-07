@@ -17,7 +17,7 @@ namespace Capstone
 
             // Make the Dictionary
             // Finding the File
-            string filePath = @"C:\Users\Student\git\c-sharp-minicapstonemodule1-team3\c-sharp-minicapstonemodule1-team3\capstone\Capstone\bin\Debug\netcoreapp3.1";
+            string filePath = @"C:\Users\Student\git\c-sharp-minicapstonemodule1-team3\capstone\Capstone\bin\Debug\netcoreapp3.1";
             string fileName = "vendingmachine.csv";
             string fullPath = Path.Combine(filePath, fileName);
             // Reading the File
@@ -92,6 +92,7 @@ namespace Capstone
             if (choice == "1")
             {
                 ShowInventory();
+                MainMenu();
             }
             if (choice == "2")
             {
@@ -139,6 +140,7 @@ namespace Capstone
                     PurchaseMenu();
                 }
                 Console.WriteLine($"You chose {VendingMachineItems[buyerChoice].Name}");
+                Console.WriteLine(VendingMachineItems[buyerChoice].Message);
                 VendingMachineItems[buyerChoice].Quantity -= 1;
                 purchase.currentBalance -= VendingMachineItems[buyerChoice].Price;
                 PurchaseMenu();
@@ -146,6 +148,7 @@ namespace Capstone
             if(purchaseMenuChoice == "3")
             {
                 Console.WriteLine("So long, sucka.");
+                Console.WriteLine(purchase.ChangeOwed());
                 MainMenu();
             }
         }

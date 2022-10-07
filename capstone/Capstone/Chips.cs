@@ -11,6 +11,7 @@ namespace Capstone
         public double Price { get; set; }
         public string Type { get; set; }
         public int Quantity { get; set; } = 5;
+        public string Message { get; set; } = "Crunch Crunch, Yum!";
 
         public Chips(string name, string slotLocation, double price, string type)
         {
