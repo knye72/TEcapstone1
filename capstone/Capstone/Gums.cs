@@ -20,5 +20,6 @@ namespace Capstone
             Price = price;
             Type = type;
         }
+
     }
 }
