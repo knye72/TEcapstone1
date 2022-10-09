@@ -14,44 +14,7 @@ namespace Capstone
 
         public static void Main(string[] args)
         {
-            // Make the Dictionary for the inventory
-            // Finding the File to read from
-            string filePath = @"C:\Users\Student\git\c-sharp-minicapstonemodule1-team3\capstone\Capstone\bin\Debug\netcoreapp3.1";
-            string fileName = "vendingmachine.csv";
-            string fullPath = Path.Combine(filePath, fileName);
-            // Reading the File
-            using (StreamReader reader = new StreamReader(fullPath))
-            {
-                while (!reader.EndOfStream)
-                {
-                    string currentLine = reader.ReadLine();
-                    if (currentLine.Contains("Chip"))
-                    {
-                        string[] lineHolder = currentLine.Split('|');
-                        Chips item  = new Chips(lineHolder[1], lineHolder[0], Double.Parse(lineHolder[2]), lineHolder[3]);
-                        VendingMachineItems.Add(lineHolder[0], item);
-                    }
-                    else if (currentLine.Contains("Candy"))
-                    {
-                        string[] lineHolder = currentLine.Split('|');
-                        Candys item = new Candys(lineHolder[1], lineHolder[0], Double.Parse(lineHolder[2]), lineHolder[3]);
-                        VendingMachineItems.Add(lineHolder[0], item);
-                    }
-                    else if (currentLine.Contains("Drink"))
-                    {
-                        string[] lineHolder = currentLine.Split('|');
-                        Drinks item = new Drinks(lineHolder[1], lineHolder[0], Double.Parse(lineHolder[2]), lineHolder[3]);
-                        VendingMachineItems.Add(lineHolder[0], item);
-                    }
-                    else if (currentLine.Contains("Gum"))
-                    {
-                        string[] lineHolder = currentLine.Split('|');
-                        Gums item = new Gums(lineHolder[1], lineHolder[0], Double.Parse(lineHolder[2]), lineHolder[3]);
-                        VendingMachineItems.Add(lineHolder[0], item);
-                    }
-
-                }
-            }
+            ReadFile();
             MainMenu();
 
 
@@ -67,7 +30,7 @@ namespace Capstone
             
             string choice = Console.ReadLine();
 
-            if (choice != "1" && choice != "2" && choice != "3")
+            if (choice != "1" && choice != "2" && choice != "3" && choice != "4")
             {
                 Console.WriteLine("Please input a valid choice");
                 MainMenu();
@@ -82,8 +45,16 @@ namespace Capstone
             {
                 PurchaseMenu();
             }
+            else if (choice == "3")
+            {
+                return; 
+            }
+            else if (choice == "4")
+            {
+                PrintSalesReport();
+            }
 
-            
+
         }
         public static void PurchaseMenu()
         {
@@ -103,21 +74,22 @@ namespace Capstone
 
             else if (purchaseMenuChoice == "1")
             {
-                Console.WriteLine("How many whole dollars would you like to add to your balance? Please use numbers and not words");
-                double moneyToAdd = double.Parse(Console.ReadLine());
 
-                //if (moneyToAdd != ????)
-                //{
-                //    Console.WriteLine("Invalid, please eter dollar amount.");
-                //}
-                //if they don't do a number we hit htem with a message like "hey asshole, we said to use a number. try again."
+                try
+                {
+                    Console.WriteLine("How many whole dollars would you like to add to your balance? Please use numbers and not words");
+                    double moneyToAdd = double.Parse(Console.ReadLine());
+                    purchase.AddToBalance(moneyToAdd);
+                    logList.Add(DateTime.Now + " " + "FEED MONEY: " + moneyToAdd + " " + purchase.currentBalance);
+                    PurchaseMenu();
+                }
 
-                purchase.AddToBalance(moneyToAdd);
-                logList.Add(DateTime.Now + " " + "FEED MONEY: " + moneyToAdd + " " +  purchase.currentBalance);
-                    
-                    
+                catch(FormatException)
+                {
+                    Console.WriteLine("Please toss in an actual number");
+                    PurchaseMenu();
+                }
                 
-                PurchaseMenu();
             }
             else if (purchaseMenuChoice == "2")
             {
@@ -152,6 +124,7 @@ namespace Capstone
 
                 Console.WriteLine(VendingMachineItems[buyerChoice].Message);
                 VendingMachineItems[buyerChoice].Quantity -= 1;
+                VendingMachineItems[buyerChoice].AmountSold += 1;
                 purchase.currentBalance -= VendingMachineItems[buyerChoice].Price;
                 Console.WriteLine($"You chose {VendingMachineItems[buyerChoice].Name}, it cost {VendingMachineItems[buyerChoice].Price}, your remaining balance is {purchase.currentBalance}.");
                 logList.Add(DateTime.Now + " " + VendingMachineItems[buyerChoice].Name + " " + VendingMachineItems[buyerChoice].Price + " " + purchase.currentBalance);
@@ -194,6 +167,65 @@ namespace Capstone
             // want to be able to access choices from here
 
 
+        }
+
+        public static void ReadFile()
+        {
+            // Make the Dictionary for the inventory
+            // Finding the File to read from
+            string filePath = @"C:\Users\Sam\git\c-sharp-minicapstonemodule1-team3\capstone\Capstone\bin\Debug\netcoreapp3.1";
+            string fileName = "vendingmachine.csv";
+            string fullPath = Path.Combine(filePath, fileName);
+            // Reading the File
+            using (StreamReader reader = new StreamReader(fullPath))
+            {
+                while (!reader.EndOfStream)
+                {
+                    string currentLine = reader.ReadLine();
+                    if (currentLine.Contains("Chip"))
+                    {
+                        string[] lineHolder = currentLine.Split('|');
+                        Chips item = new Chips(lineHolder[1], lineHolder[0], Double.Parse(lineHolder[2]), lineHolder[3]);
+                        VendingMachineItems.Add(lineHolder[0], item);
+                    }
+                    else if (currentLine.Contains("Candy"))
+                    {
+                        string[] lineHolder = currentLine.Split('|');
+                        Candys item = new Candys(lineHolder[1], lineHolder[0], Double.Parse(lineHolder[2]), lineHolder[3]);
+                        VendingMachineItems.Add(lineHolder[0], item);
+                    }
+                    else if (currentLine.Contains("Drink"))
+                    {
+                        string[] lineHolder = currentLine.Split('|');
+                        Drinks item = new Drinks(lineHolder[1], lineHolder[0], Double.Parse(lineHolder[2]), lineHolder[3]);
+                        VendingMachineItems.Add(lineHolder[0], item);
+                    }
+                    else if (currentLine.Contains("Gum"))
+                    {
+                        string[] lineHolder = currentLine.Split('|');
+                        Gums item = new Gums(lineHolder[1], lineHolder[0], Double.Parse(lineHolder[2]), lineHolder[3]);
+                        VendingMachineItems.Add(lineHolder[0], item);
+                    }
+
+                }
+            }
+        }
+
+        public static void PrintSalesReport()
+        {
+            double runningTotal = 0;
+            foreach (string thing in VendingMachineItems.Keys)
+            {
+                Console.WriteLine(VendingMachineItems[thing].Name + " "+ VendingMachineItems[thing].AmountSold);
+                if (VendingMachineItems[thing].AmountSold > 0)
+                {
+                    runningTotal += (VendingMachineItems[thing].AmountSold) * (VendingMachineItems[thing].Price);
+                }
+
+            }
+            Console.WriteLine();
+            Console.WriteLine("TOTAL SALES: $"+ runningTotal);
+            MainMenu();
         }
 
 
