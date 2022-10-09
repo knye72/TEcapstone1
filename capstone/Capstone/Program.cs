@@ -67,12 +67,18 @@ namespace Capstone
             
             string choice = Console.ReadLine();
 
-            if (choice == "1")
+            if (choice != "1" && choice != "2" && choice != "3")
+            {
+                Console.WriteLine("Please input a valid choice");
+                MainMenu();
+            }
+
+            else if (choice == "1")
             {
                 ShowInventory();
                 MainMenu();
             }
-            if (choice == "2")
+            else if (choice == "2")
             {
                 PurchaseMenu();
             }
@@ -88,13 +94,22 @@ namespace Capstone
             Console.WriteLine("3) Finish Transaction");
             string purchaseMenuChoice = Console.ReadLine();
 
+            if (purchaseMenuChoice != "1" && purchaseMenuChoice != "2" && purchaseMenuChoice != "3")
+            {
+                Console.WriteLine("Please input a valid choice");
+                PurchaseMenu();
+            }
 
 
-            if (purchaseMenuChoice == "1")
+            else if (purchaseMenuChoice == "1")
             {
                 Console.WriteLine("How many whole dollars would you like to add to your balance? Please use numbers and not words");
                 double moneyToAdd = double.Parse(Console.ReadLine());
 
+                //if (moneyToAdd != ????)
+                //{
+                //    Console.WriteLine("Invalid, please eter dollar amount.");
+                //}
                 //if they don't do a number we hit htem with a message like "hey asshole, we said to use a number. try again."
 
                 purchase.AddToBalance(moneyToAdd);
@@ -104,7 +119,7 @@ namespace Capstone
                 
                 PurchaseMenu();
             }
-            if (purchaseMenuChoice == "2")
+            else if (purchaseMenuChoice == "2")
             {
                 if (purchase.currentBalance == 0)
                 {
@@ -142,7 +157,7 @@ namespace Capstone
                 logList.Add(DateTime.Now + " " + VendingMachineItems[buyerChoice].Name + " " + VendingMachineItems[buyerChoice].Price + " " + purchase.currentBalance);
                 PurchaseMenu();
             }
-            if (purchaseMenuChoice == "3")
+            else if (purchaseMenuChoice == "3")
             {
                 Console.WriteLine("So long, sucka.");
                 Console.WriteLine(purchase.ChangeOwed());
