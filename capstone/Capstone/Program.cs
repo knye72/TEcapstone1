@@ -62,7 +62,7 @@ namespace Capstone
         public static void PurchaseMenu()
         {
             //This is the method that lets the user make purchases
-            Console.WriteLine($"Current money provided: {purchase.currentBalance}");
+            Console.WriteLine($"Current money provided: {((purchase.currentBalance).ToString("C2"))}");
             Console.WriteLine("1) Feed Money");
             Console.WriteLine("2) Purchase Item");
             Console.WriteLine("3) Finish Transaction");
@@ -83,7 +83,7 @@ namespace Capstone
                     Console.WriteLine("How many whole dollars would you like to add to your balance? Please use numbers and not words");
                     double moneyToAdd = double.Parse(Console.ReadLine());
                     purchase.AddToBalance(moneyToAdd);
-                    logList.Add(DateTime.Now + " " + "FEED MONEY: " + moneyToAdd + " " + purchase.currentBalance);
+                    logList.Add(DateTime.Now + " " + "FEED MONEY: " + moneyToAdd + " " + (purchase.currentBalance).ToString("C2"));
                     PurchaseMenu();
                 }
 
@@ -107,7 +107,7 @@ namespace Capstone
                 foreach (string thing in VendingMachineItems.Keys)
                 {
                     //this is where we print out the current inventory for them to see
-                    Console.WriteLine(VendingMachineItems[thing].SlotLocation + " " + VendingMachineItems[thing].Name + " " + VendingMachineItems[thing].Price + " " + VendingMachineItems[thing].Quantity);
+                    Console.WriteLine(VendingMachineItems[thing].SlotLocation + " " + VendingMachineItems[thing].Name + " " + (VendingMachineItems[thing].Price).ToString("C2") + " " + "Quantity Remaining: " + VendingMachineItems[thing].Quantity);
 
                 }
                 Console.WriteLine("Choose the item you want to buy");
@@ -136,8 +136,8 @@ namespace Capstone
                 VendingMachineItems[buyerChoice].Quantity -= 1; //we're decreasing the quantity 
                 VendingMachineItems[buyerChoice].AmountSold += 1; //we're increasing the amoutn sold (for the Sales Report)
                 purchase.currentBalance -= VendingMachineItems[buyerChoice].Price; //decreasing the balance by the cost of the item(s)
-                Console.WriteLine($"You chose {VendingMachineItems[buyerChoice].Name}, it cost {VendingMachineItems[buyerChoice].Price}, your remaining balance is {purchase.currentBalance}."); //telling the user what they bought
-                logList.Add(DateTime.Now + " " + VendingMachineItems[buyerChoice].Name + " " + VendingMachineItems[buyerChoice].Price + " " + purchase.currentBalance); //adding the transaction to the List
+                Console.WriteLine($"You chose {VendingMachineItems[buyerChoice].Name}, it cost {(VendingMachineItems[buyerChoice].Price).ToString("C2")}, your remaining balance is {(purchase.currentBalance).ToString("C2")}."); //telling the user what they bought
+                logList.Add(DateTime.Now + " " + VendingMachineItems[buyerChoice].Name + " " + (VendingMachineItems[buyerChoice].Price).ToString("C2") + " " + (purchase.currentBalance).ToString("C2")); //adding the transaction to the List
                 PurchaseMenu(); //then we send them back to the purchase menu
             }
             else if (purchaseMenuChoice == "3")
@@ -145,7 +145,7 @@ namespace Capstone
                 // this is the one where we finalize our purchases 
                 Console.WriteLine("So long, sucka."); //truly a poingant sendoff message 
                 Console.WriteLine(purchase.ChangeOwed()); //this is where we're sending them the amount of change they're getting 
-                logList.Add(DateTime.Now + " " + "GIVE CHANGE: " + purchase.ChangeOwed() + " " + purchase.currentBalance); //then we add that to the log
+                logList.Add(DateTime.Now + " " + "GIVE CHANGE: " + purchase.ChangeOwed() + " " + (purchase.currentBalance).ToString("C2")); //then we add that to the log
                 string pathToSecondFile = Environment.CurrentDirectory; //path to our log file
                 string secondFile = "Log.txt"; //name of our log file 
                 string areWeThereYet = Path.Combine(pathToSecondFile, secondFile); //full path to our log file
@@ -166,7 +166,7 @@ namespace Capstone
         {//this is where we shoe the inventory 
             foreach (string thing in VendingMachineItems.Keys)
             {
-                Console.WriteLine(VendingMachineItems[thing].SlotLocation + " " + VendingMachineItems[thing].Name + " " + VendingMachineItems[thing].Price + " " + VendingMachineItems[thing].Quantity);
+                Console.WriteLine(VendingMachineItems[thing].SlotLocation + " " + VendingMachineItems[thing].Name + " " + $"{(VendingMachineItems[thing].Price).ToString("C2")}" + " " + "Quantity Available: " + VendingMachineItems[thing].Quantity);
 
             }
         }
@@ -175,7 +175,7 @@ namespace Capstone
         {
             // Make the Dictionary for the inventory
             // Finding the File to read from
-            string filePath = @"C:\Users\Sam\git\c-sharp-minicapstonemodule1-team3\capstone\Capstone\bin\Debug\netcoreapp3.1";
+            string filePath = @"C:\Users\Student\git\c-sharp-minicapstonemodule1-team3\capstone\Capstone\bin\Debug\netcoreapp3.1";
             string fileName = "vendingmachine.csv";
             string fullPath = Path.Combine(filePath, fileName);
             // Reading the File
