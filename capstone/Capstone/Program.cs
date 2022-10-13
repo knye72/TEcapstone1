@@ -50,7 +50,7 @@ namespace Capstone
             //This choice exits the program
             else if (choice == "3")
             {
-                return; 
+                Environment.Exit(1);
             }
             //This choice prints out the Sales Report
             else if (choice == "4")
@@ -82,6 +82,11 @@ namespace Capstone
                 {
                     Console.WriteLine("How many whole dollars would you like to add to your balance? Please use numbers and not words");
                     double moneyToAdd = double.Parse(Console.ReadLine());
+                    if (moneyToAdd % 1 != 0)
+                    {
+                        Console.WriteLine("Please put in whole numbers.");
+                        PurchaseMenu();
+                    }
                     purchase.AddToBalance(moneyToAdd);
                     logList.Add(DateTime.Now + " " + "FEED MONEY: " + moneyToAdd + " " + (purchase.currentBalance).ToString("C2"));
                     PurchaseMenu();
